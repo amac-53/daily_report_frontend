@@ -22,7 +22,7 @@ export default defineComponent({
         const all_data = ref([]);
 
         const getAllData = () => {
-            axios.get("http://127.0.0.1:8000/daily")
+            axios.get("http://35.78.97.7/daily")
                 .then(response => (all_data.value = response.data))
                 .catch(error => console.log(error))  
         }

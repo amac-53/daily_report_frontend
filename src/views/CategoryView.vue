@@ -24,7 +24,7 @@ export default defineComponent({
         const route = useRoute()
 
         const getContent = () => {
-            const url = 'http://127.0.0.1:8000/daily/' + route.params['cat']
+            const url = 'http://35.78.97.7/daily/' + route.params['cat']
             axios.get(url)
                 .then(response => {
                     title.value= `${route.params['cat']}`
