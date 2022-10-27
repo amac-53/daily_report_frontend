@@ -1,6 +1,6 @@
 <!-- 詳細ページの中身 -->
 <template>
-<h1 class="m-5">{{ title }}</h1>
+<h1 class="m-5">{{ getTitle() }}</h1>
 
 <div v-for="item in data">
     <div class="card p-4 m-5">
@@ -10,33 +10,50 @@
 </div>
 </template>
     
-<script lang="ts">
-import axios from "axios"
 
-export default {
-    data() {
+<script lang="ts">
+import { ref, reactive, defineComponent, onMounted, onUpdated } from "vue"
+import axios from "axios"
+import { useRoute } from 'vue-router'
+
+export default defineComponent({
+    setup () {  
+        const title = ref('')
+        const data = ref('')
+
+        const route = useRoute()
+
+        const getContent = () => {
+            const url = 'http://127.0.0.1:8000/daily/' + route.params['cat']
+            axios.get(url)
+                .then(response => {
+                    title.value= `${route.params['cat']}`
+                    data.value = response.data
+                })
+                .catch(error => console.log(error))
+        }
+        const getTitle = () => {
+            if (title.value == 'research'){
+                return '研究'
+            }else if(title.value == 'hobby'){
+                return '趣味'
+            }else{
+                return '学習'
+            }
+        }
+        onMounted(() => {
+            getContent();
+        })
+
+        onUpdated(() => {
+            getContent();
+        })
+
         return {
-            title: '',
-            data: '',
-            research: '',
+            getTitle,
+            title,
+            data
         }
-    },
-    methods: {
-        getContent: async function() {
-            const url = 'http://127.0.0.1:8000/daily/' + this.$route.params['cat']
-            const res = await axios.get(url);
-            this.title = `${this.$route.params['cat']}`;
-            this.data = res.data;
-            // this.research = res.data['research'];
-            // this.study = res.data['study'];
-            // this.hobby = res.data['hobby'];
-        }
-    },
-    mounted() {
-        this.getContent();
-    },
-    updated() {
-        this.getContent();
     }
-}
+})
 </script>

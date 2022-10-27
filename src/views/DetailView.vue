@@ -22,29 +22,39 @@
 </template>
     
 <script lang="ts">
+import { ref, reactive, onMounted, defineComponent } from 'vue'
 import axios from "axios"
+import { useRoute } from 'vue-router'
 
-export default {
-    data() {
+export default defineComponent({
+    setup () {
+        const date = ref('')
+        const research = ref('')
+        const study = ref('')
+        const hobby = ref('')
+
+        const route = useRoute()
+        
+        const getContent = () => {
+            const url = 'http://127.0.0.1:8000/daily/'+ route.params['id']
+            axios.get(url)
+                .then(response => {
+                    date.value = response.data['date']
+                    research.value = response.data['research']
+                    study.value = response.data['study']
+                    hobby.value = response.data['hobby']
+                })
+                .catch(error => console.log(error))  
+        }
+        onMounted(() => {
+            getContent()
+        })
+
         return {
-            date: '',
-            research: '',
-            study: '', 
-            hobby: ''
+            date,
+            research,
+            study, 
+            hobby
         }
-    },
-    methods: {
-        getContent: async function() {
-            const url = 'http://127.0.0.1:8000/daily/detail/'+ this.$route.params['id']
-            const res = await axios.get(url);
-            this.date = res.data['date'];
-            this.research = res.data['research'];
-            this.study = res.data['study'];
-            this.hobby = res.data['hobby'];
-        }
-    },
-    mounted() {
-        this.getContent();
-    }
-}
+}})
 </script>

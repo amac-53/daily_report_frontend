@@ -1,5 +1,4 @@
 <!-- 詳細ページの中身 -->
-
 <template>
 <h1>{{title}}</h1>
 </template>
