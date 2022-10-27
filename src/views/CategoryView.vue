@@ -19,7 +19,7 @@ import { useRoute } from 'vue-router'
 export default defineComponent({
     setup () {  
         const title = ref('')
-        const data = ref('')
+        const data = ref([])
 
         const route = useRoute()
 
