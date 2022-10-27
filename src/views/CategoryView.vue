@@ -4,8 +4,8 @@
 
 <div v-for="item in data">
     <div class="card p-4 m-5">
-        <h2>{{ item['date'] }}</h2>
-        <p> {{ item[`${title}`]}}</p>
+        <h2>{{ item["date"] }}</h2>
+        <p> {{ item[title]}}</p>
     </div>
 </div>
 </template>
